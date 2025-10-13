@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная - Портфолио</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-with-logo">
+            <div class="logo">
+                <img src="images/logo.svg" alt="Логотип" class="logo-svg">
+                <span class="logo-text">Kirill.portfolio</span>
+            </div>
+            <nav class="nav-under-logo">
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="pages/projects.html">Проекты</a></li>
+                    <li><a href="pages/diary.html">Дневник</a></li>
+                    <li><a href="pages/contacts.html">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="hero">
+            <h2>Студенит группы ЭФБО-15-24</h2>
+            <p>Увлекаюсь веб-разработкой.</p>
+            <a href="assets/resume.pdf" download="Резюме_Студент.pdf">
+                <button>Скачать резюме в формате (PDF)</button>
+            </a>
+        </section>
+
+        <section class="skills">
+            <h3>Мои навыки</h3>
+            <div class="skills-list">
+                <div class="skill-item">
+                    <span>HTML/CSS</span>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 60%;"></div>
+                    </div>
+                    <span>60%</span>
+                </div>
+            <div class="skills-list">
+                <div class="skill-item">
+                    <span>JavaScript</span>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 10%;"></div>
+                    </div>
+                    <span>10%</span>
+                </div>
+                <div class="skill-item">
+                    <span>Bootstrap</span>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 10%;"></div>
+                    </div>
+                    <span>10%</span>
+                </div>
+                <div class="skill-item">
+                    <span>React</span>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 10%;"></div>
+                    </div>
+                    <span>10%</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="featured-projects">
+            <h3>Лучшие проекты</h3>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h4>Личный сайт</h4>
+                    <p>HTML, CSS, JavaScript</p>
+                </div>
+                <div class="project-card">
+                    <h4>Todo App</h4>
+                    <p>React, LocalStorage</p>
+                </div>
+                <div class="project-card">
+                    <h4>Интернет-магазин</h4>
+                    <p>React, Node.js</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2025 Портфолио студента. </p>
+        <p>Контакты: chekunov.k.a@edu.mirea.ru | GitHub: neponyaten</p>
+    </footer>
+</body>
+</html>
