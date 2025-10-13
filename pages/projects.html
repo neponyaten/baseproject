@@ -11,105 +11,90 @@
         <button class="theme-toggle" id="themeToggle">🌓</button>
     </div>
 
-    <div class="visit-counter" id="visitCounter"></div>
+    <div class="visit-counter" id="visitCounter">👁 1</div>
 
     <header class="header">
-        <div class="nav-container">
-            <div class="logo">
-                <div class="logo-icon">{</div>
-                <span class="logo-text">DevPortfolio</span>
-                <div class="logo-icon">}</div>
+        <div class="container">
+            <div class="nav-container">
+                <div class="logo">
+                    <span>{ DevPortfolio }</span>
+                </div>
+                <nav class="nav">
+                    <ul class="nav-list" id="navList">
+                        <li><a href="../index.html" class="nav-link">Главная</a></li>
+                        <li><a href="projects.html" class="nav-link active">Проекты</a></li>
+                        <li><a href="diary.html" class="nav-link">Дневник</a></li>
+                        <li><a href="contacts.html" class="nav-link">Контакты</a></li>
+                    </ul>
+                </nav>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
             </div>
-            <nav class="nav">
-                <ul class="nav-list">
-                    <li><a href="../index.html" class="nav-link">Главная</a></li>
-                    <li><a href="projects.html" class="nav-link active">Проекты</a></li>
-                    <li><a href="diary.html" class="nav-link">Дневник</a></li>
-                    <li><a href="contacts.html" class="nav-link">Контакты</a></li>
-                </ul>
-            </nav>
-            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
         </div>
     </header>
 
-    <main class="projects-page">
+    <main class="main-content">
         <div class="container">
-            <!-- Page Header -->
-            <div class="page-header">
-                <h1 class="page-title">Мои Проекты</h1>
-                <p class="page-subtitle">Коллекция учебных и личных проектов</p>
-                
-                <!-- Search and Filters -->
-                <div class="projects-controls">
-                    <div class="search-box">
-                        <input type="text" id="projectSearch" placeholder="Поиск проектов..." class="search-input">
-                        <button class="search-btn" id="searchBtn">🔍</button>
+            <h1 class="section-title">Мои Проекты</h1>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3 class="project-title">E-Commerce Platform</h3>
+                    <p class="project-description">Полнофункциональный интернет-магазин с системой управления заказами и платежами</p>
+                    <div class="project-technologies">
+                        <strong>Технологии:</strong> React, Node.js, MongoDB, Stripe API
                     </div>
-                    
-                    <div class="filters">
-                        <select id="categoryFilter" class="filter-select">
-                            <option value="all">Все категории</option>
-                            <option value="react">React</option>
-                            <option value="javascript">JavaScript</option>
-                            <option value="html">HTML/CSS</option>
-                            <option value="fullstack">FullStack</option>
-                        </select>
-                        
-                        <select id="sortFilter" class="filter-select">
-                            <option value="newest">Сначала новые</option>
-                            <option value="oldest">Сначала старые</option>
-                            <option value="name">По названию</option>
-                        </select>
+                    <div style="margin-top: 1rem;">
+                        <button class="btn" onclick="portfolio.showMessage('info', 'Демо проекта')">Демо</button>
+                        <button class="btn btn-outline" onclick="portfolio.showMessage('info', 'GitHub репозиторий')">Код</button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Projects Grid -->
-            <div class="projects-container">
-                <div class="projects-grid" id="projectsGrid">
-                    <!-- Projects loaded by JavaScript -->
+                <div class="project-card">
+                    <h3 class="project-title">Task Management App</h3>
+                    <p class="project-description">Приложение для управления задачами с командной работой и уведомлениями</p>
+                    <div class="project-technologies">
+                        <strong>Технологии:</strong> React, TypeScript, Firebase, Material-UI
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <button class="btn" onclick="portfolio.showMessage('info', 'Демо проекта')">Демо</button>
+                        <button class="btn btn-outline" onclick="portfolio.showMessage('info', 'GitHub репозиторий')">Код</button>
+                    </div>
                 </div>
-                
-                <!-- Loading State -->
-                <div class="loading-state" id="loadingState">
-                    <div class="loading-spinner"></div>
-                    <p>Загрузка проектов...</p>
-                </div>
-                
-                <!-- Empty State -->
-                <div class="empty-state" id="emptyState" style="display: none;">
-                    <p>Проекты не найдены</p>
-                    <button class="btn btn-outline" id="resetFilters">Сбросить фильтры</button>
-                </div>
-            </div>
 
-            <!-- Load More -->
-            <div class="load-more-container">
-                <button class="btn btn-outline" id="loadMoreBtn">Загрузить еще</button>
+                <div class="project-card">
+                    <h3 class="project-title">Weather Dashboard</h3>
+                    <p class="project-description">Интерактивная панель погоды с расширенными прогнозами и картами</p>
+                    <div class="project-technologies">
+                        <strong>Технологии:</strong> JavaScript, Chart.js, OpenWeather API
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <button class="btn" onclick="portfolio.showMessage('info', 'Демо проекта')">Демо</button>
+                        <button class="btn btn-outline" onclick="portfolio.showMessage('info', 'GitHub репозиторий')">Код</button>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3 class="project-title">Portfolio Website</h3>
+                    <p class="project-description">Адаптивный веб-сайт портфолио с современным дизайном и анимациями</p>
+                    <div class="project-technologies">
+                        <strong>Технологии:</strong> HTML5, CSS3, JavaScript
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <button class="btn" onclick="portfolio.showMessage('info', 'Демо проекта')">Демо</button>
+                        <button class="btn btn-outline" onclick="portfolio.showMessage('info', 'GitHub репозиторий')">Код</button>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
-    <!-- Project Modal -->
-    <div class="modal" id="projectModal">
-        <div class="modal-content">
-            <button class="modal-close" id="modalClose">&times;</button>
-            <div class="modal-body" id="modalBody">
-                <!-- Modal content loaded by JavaScript -->
-            </div>
-        </div>
-    </div>
-
     <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2025 Иван Иванов. Все права защищены.</p>
-                <a href="../index.html" class="back-link">← На главную</a>
-            </div>
+            <p>&copy; 2025 Иван Иванов. Все права защищены.</p>
+            <a href="../index.html" style="color: inherit;">← На главную</a>
         </div>
     </footer>
 
     <script src="../scripts/core.js"></script>
-    <script src="../scripts/projects.js"></script>
 </body>
 </html>
