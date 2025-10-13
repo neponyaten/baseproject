@@ -2,93 +2,210 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Главная - Портфолио</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Иван Иванов - Frontend Developer</title>
     <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-    <header>
-        <div class="header-with-logo">
+    <!-- Theme Toggle -->
+    <div class="theme-switch">
+        <button class="theme-toggle" id="themeToggle">🌓</button>
+    </div>
+
+    <!-- Visit Counter -->
+    <div class="visit-counter" id="visitCounter"></div>
+
+    <!-- Navigation -->
+    <header class="header">
+        <div class="nav-container">
             <div class="logo">
-                <img src="images/logo.svg" alt="Логотип" class="logo-svg">
-                <span class="logo-text">Kirill.portfolio</span>
+                <div class="logo-icon">{</div>
+                <span class="logo-text">DevPortfolio</span>
+                <div class="logo-icon">}</div>
             </div>
-            <nav class="nav-under-logo">
-                <ul>
-                    <li><a href="index.html">Главная</a></li>
-                    <li><a href="pages/projects.html">Проекты</a></li>
-                    <li><a href="pages/diary.html">Дневник</a></li>
-                    <li><a href="pages/contacts.html">Контакты</a></li>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link active">Главная</a></li>
+                    <li><a href="pages/projects.html" class="nav-link">Проекты</a></li>
+                    <li><a href="pages/diary.html" class="nav-link">Дневник</a></li>
+                    <li><a href="pages/contacts.html" class="nav-link">Контакты</a></li>
                 </ul>
             </nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
         </div>
     </header>
 
-    <div class="container">
-        <section class="hero">
-            <h2>Студенит группы ЭФБО-15-24</h2>
-            <p>Увлекаюсь веб-разработкой.</p>
-            <a href="assets/resume.pdf" download="Резюме_Студент.pdf">
-                <button>Скачать резюме в формате (PDF)</button>
-            </a>
-        </section>
-
-        <section class="skills">
-            <h3>Мои навыки</h3>
-            <div class="skills-list">
-                <div class="skill-item">
-                    <span>HTML/CSS</span>
-                    <div class="progress-bar">
-                        <div class="progress" style="width: 60%;"></div>
-                    </div>
-                    <span>60%</span>
-                </div>
-            <div class="skills-list">
-                <div class="skill-item">
-                    <span>JavaScript</span>
-                    <div class="progress-bar">
-                        <div class="progress" style="width: 10%;"></div>
-                    </div>
-                    <span>10%</span>
-                </div>
-                <div class="skill-item">
-                    <span>Bootstrap</span>
-                    <div class="progress-bar">
-                        <div class="progress" style="width: 10%;"></div>
-                    </div>
-                    <span>10%</span>
-                </div>
-                <div class="skill-item">
-                    <span>React</span>
-                    <div class="progress-bar">
-                        <div class="progress" style="width: 10%;"></div>
-                    </div>
-                    <span>10%</span>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title" id="typedTitle"></h1>
+                <p class="hero-subtitle">Frontend Developer & UI/UX Enthusiast</p>
+                <p class="hero-description">
+                    Создаю современные, адаптивные веб-приложения с акцентом на производительность 
+                    и пользовательский опыт. Специализируюсь на React, TypeScript и современных CSS-методологиях.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" id="downloadResume">
+                        📄 Скачать Резюме
+                    </button>
+                    <button class="btn btn-outline" id="viewProjects">
+                        🚀 Смотреть Проекты
+                    </button>
                 </div>
             </div>
-        </section>
-
-        <section class="featured-projects">
-            <h3>Лучшие проекты</h3>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <h4>Личный сайт</h4>
-                    <p>HTML, CSS, JavaScript</p>
-                </div>
-                <div class="project-card">
-                    <h4>Todo App</h4>
-                    <p>React, LocalStorage</p>
-                </div>
-                <div class="project-card">
-                    <h4>Интернет-магазин</h4>
-                    <p>React, Node.js</p>
+            <div class="hero-visual">
+                <div class="code-animation">
+                    <div class="code-line"><span class="code-tag">&lt;div</span> <span class="code-attr">class=</span><span class="code-string">"developer"</span><span class="code-tag">&gt;</span></div>
+                    <div class="code-line">&nbsp;&nbsp;<span class="code-tag">&lt;skill</span> <span class="code-attr">name=</span><span class="code-string">"JavaScript"</span> <span class="code-attr">level=</span><span class="code-string">"90%"</span><span class="code-tag">/&gt;</span></div>
+                    <div class="code-line">&nbsp;&nbsp;<span class="code-tag">&lt;skill</span> <span class="code-attr">name=</span><span class="code-string">"React"</span> <span class="code-attr">level=</span><span class="code-string">"85%"</span><span class="code-tag">/&gt;</span></div>
+                    <div class="code-line">&nbsp;&nbsp;<span class="code-tag">&lt;skill</span> <span class="code-attr">name=</span><span class="code-string">"TypeScript"</span> <span class="code-attr">level=</span><span class="code-string">"80%"</span><span class="code-tag">/&gt;</span></div>
+                    <div class="code-line"><span class="code-tag">&lt;/div&gt;</span></div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 
-    <footer>
-        <p>© 2025 Портфолио студента. </p>
-        <p>Контакты: chekunov.k.a@edu.mirea.ru | GitHub: neponyaten</p>
+    <!-- Skills Section -->
+    <section class="skills-section" id="skills">
+        <div class="container">
+            <h2 class="section-title">Технические Навыки</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3 class="skill-category-title">Frontend</h3>
+                    <div class="skills-list">
+                        <div class="skill-item" data-skill="html">
+                            <div class="skill-header">
+                                <span class="skill-name">HTML5/CSS3</span>
+                                <span class="skill-percent">95%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-level="95"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-skill="js">
+                            <div class="skill-header">
+                                <span class="skill-name">JavaScript ES6+</span>
+                                <span class="skill-percent">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-level="90"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-skill="react">
+                            <div class="skill-header">
+                                <span class="skill-name">React</span>
+                                <span class="skill-percent">85%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-level="85"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h3 class="skill-category-title">Tools & Other</h3>
+                    <div class="skills-list">
+                        <div class="skill-item" data-skill="git">
+                            <div class="skill-header">
+                                <span class="skill-name">Git/GitHub</span>
+                                <span class="skill-percent">88%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-level="88"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-skill="webpack">
+                            <div class="skill-header">
+                                <span class="skill-name">Webpack/Vite</span>
+                                <span class="skill-percent">75%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-level="75"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-skill="figma">
+                            <div class="skill-header">
+                                <span class="skill-name">Figma/Adobe XD</span>
+                                <span class="skill-percent">70%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-level="70"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Projects -->
+    <section class="projects-preview">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Избранные Проекты</h2>
+                <a href="pages/projects.html" class="view-all-link">Все проекты →</a>
+            </div>
+            <div class="projects-grid" id="featuredProjects">
+                <!-- Projects will be loaded by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🚀</div>
+                    <div class="stat-number" data-target="24">0</div>
+                    <div class="stat-label">Завершенных проектов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-number" data-target="1500">0</div>
+                    <div class="stat-label">Часов программирования</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">☕</div>
+                    <div class="stat-number" data-target="999">0</div>
+                    <div class="stat-label">Выпито кофе</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-number" data-target="100">0</div>
+                    <div class="stat-label">Решенных задач</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-logo">{"{ DevPortfolio }"}</div>
+                    <p>Создано с ❤️ и JavaScript</p>
+                </div>
+                <div class="footer-stats">
+                    <div class="footer-stat">
+                        <span>Посетителей:</span>
+                        <strong id="totalVisitors">0</strong>
+                    </div>
+                    <div class="footer-stat">
+                        <span>Обновлено:</span>
+                        <strong id="lastUpdate">сегодня</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
+
+    <!-- JavaScript -->
+    <script src="scripts/core.js"></script>
+    <script src="scripts/animations.js"></script>
+    <script src="scripts/home.js"></script>
 </body>
 </html>
