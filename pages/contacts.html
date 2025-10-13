@@ -2,47 +2,102 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Контакты</title>
+    <title>Контакты - Портфолио</title>
     <link rel="stylesheet" href="../styles/styles.css">
 </head>
 <body>
+    <!-- Переключатель темы -->
+    <div class="theme-switch">
+        <button class="theme-toggle">🌓</button>
+    </div>
+
+    <!-- Счетчик посещений -->
+    <div class="visit-counter"></div>
+
     <header>
-        <h1>Kirill.portfolio</h1>
-        <nav>
-            <ul>
-                <li><a href="../index.html">Главная</a></li>
-                <li><a href="projects.html">Проекты</a></li>
-                <li><a href="diary.html">Дневник</a></li>
-                <li><a href="contacts.html">Контакты</a></li>
-            </ul>
-        </nav>
+        <div class="header-with-logo">
+            <div class="logo">
+                <img src="../images/logo.svg" alt="Логотип" class="logo-svg">
+                <span class="logo-text">Имя Студента</span>
+            </div>
+            <nav class="nav-under-logo">
+                <ul>
+                    <li><a href="../index.html">Главная</a></li>
+                    <li><a href="projects.html">Проекты</a></li>
+                    <li><a href="diary.html">Дневник</a></li>
+                    <li><a href="contacts.html">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <div class="container">
         <h2>Свяжитесь со мной</h2>
-        <form>
-            <label for="name">Имя:</label>
-            <input type="text" id="name" name="name" required>
+        
+        <div class="contact-content">
+            <div class="contact-form-section">
+                <form id="contactForm">
+                    <label for="name">Имя:</label>
+                    <input type="text" id="name" name="name" required 
+                           placeholder="Ваше имя" minlength="2">
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required 
+                           placeholder="your@email.com">
 
-            <label for="message">Сообщение:</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
+                    <label for="message">Сообщение:</label>
+                    <textarea id="message" name="message" rows="5" required 
+                              placeholder="Ваше сообщение..." minlength="10"></textarea>
 
-            <button type="submit">Отправить сообщение</button>
-        </form>
+                    <button type="submit">📨 Отправить сообщение</button>
+                </form>
+                
+                <div class="form-message"></div>
+            </div>
 
-        <section>
-            <h3>Контакты:</h3>
-            <p>📧 chekunov.k.a@edu.mirea.ru</p>
-            <p>🐙 GitHub: neponyaten</p>
-            <p>🏠 Москва, Россия</p>
+            <div class="contact-info-section">
+                <h3>Контакты:</h3>
+                <div class="contact-item">
+                    <strong>📧 Email:</strong> 
+                    <a href="mailto:student@edu.ru">student@edu.ru</a>
+                </div>
+                <div class="contact-item">
+                    <strong>🐙 GitHub:</strong> 
+                    <a href="https://github.com/username" target="_blank">username</a>
+                </div>
+                <div class="contact-item">
+                    <strong>🏠 Адрес:</strong> 
+                    <span>Город, Страна</span>
+                </div>
+                
+                <div class="social-links">
+                    <button onclick="portfolio.openSocial('telegram')">Telegram</button>
+                    <button onclick="portfolio.openSocial('linkedin')">LinkedIn</button>
+                    <button onclick="portfolio.openSocial('github')">GitHub</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Яндекс Карта -->
+        <section class="map-section">
+            <h3>Я на карте</h3>
+            <div id="map" class="map-container">
+                <div class="map-placeholder">
+                    Загрузка карты...
+                    <button onclick="initMapFallback()" style="margin-top: 10px;">
+                        Загрузить карту
+                    </button>
+                </div>
+            </div>
         </section>
     </div>
 
     <footer>
-        <p>© 2025 Контакты студента.</p>
+        <p>© 2025 Портфолио студента. Все права защищены.</p>
+        <p>Посетителей сегодня: <span id="dailyCounter">0</span></p>
     </footer>
+
+    <script src="../scripts/main.js"></script>
+    <script src="../scripts/map.js"></script>
 </body>
 </html>
