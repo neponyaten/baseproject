@@ -2,35 +2,200 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Дневник</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учебный дневник - Иван Иванов</title>
     <link rel="stylesheet" href="../styles/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Kirill.portfolio</h1>
-        <nav>
-            <ul>
-                <li><a href="../index.html">Главная</a></li>
-                <li><a href="projects.html">Проекты</a></li>
-                <li><a href="diary.html">Дневник</a></li>
-                <li><a href="contacts.html">Контакты</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <div class="container">
-        <section>
-            <h2>Мой учебный прогресс</h2>
-            <ul>
-                <li>13 октября - Верстка макета сайта ✓</li>
-            </ul>
-        </section>
-
-        <button>Добавить запись (Дорабатывается)</button>
+    <div class="theme-switch">
+        <button class="theme-toggle" id="themeToggle">🌓</button>
     </div>
 
-    <footer>
-        <p>© 2025 Дневник студента.</p>
+    <div class="visit-counter" id="visitCounter"></div>
+
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">{</div>
+                <span class="logo-text">DevPortfolio</span>
+                <div class="logo-icon">}</div>
+            </div>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="../index.html" class="nav-link">Главная</a></li>
+                    <li><a href="projects.html" class="nav-link">Проекты</a></li>
+                    <li><a href="diary.html" class="nav-link active">Дневник</a></li>
+                    <li><a href="contacts.html" class="nav-link">Контакты</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        </div>
+    </header>
+
+    <main class="diary-page">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Учебный Дневник</h1>
+                <p class="page-subtitle">Отслеживание прогресса и учебных целей</p>
+                
+                <!-- Quick Stats -->
+                <div class="quick-stats">
+                    <div class="stat-badge">
+                        <span class="stat-number" id="totalHours">0</span>
+                        <span class="stat-label">часов обучения</span>
+                    </div>
+                    <div class="stat-badge">
+                        <span class="stat-number" id="completedTasks">0</span>
+                        <span class="stat-label">задач выполнено</span>
+                    </div>
+                    <div class="stat-badge">
+                        <span class="stat-number" id="currentStreak">0</span>
+                        <span class="stat-label">дней подряд</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="diary-layout">
+                <!-- Left Column - Progress & Goals -->
+                <div class="diary-column">
+                    <!-- Current Progress -->
+                    <section class="progress-section">
+                        <h2 class="section-title">Текущий Прогресс</h2>
+                        <div class="progress-cards">
+                            <div class="progress-card">
+                                <h3>Frontend Разработка</h3>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" data-progress="85"></div>
+                                </div>
+                                <span class="progress-text">85% завершено</span>
+                            </div>
+                            <div class="progress-card">
+                                <h3>JavaScript Advanced</h3>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" data-progress="70"></div>
+                                </div>
+                                <span class="progress-text">70% завершено</span>
+                            </div>
+                            <div class="progress-card">
+                                <h3>React & Ecosystem</h3>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" data-progress="60"></div>
+                                </div>
+                                <span class="progress-text">60% завершено</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Deadlines -->
+                    <section class="deadlines-section">
+                        <h2 class="section-title">Ближайшие Дедлайны</h2>
+                        <div class="deadlines-list" id="deadlinesList">
+                            <!-- Deadlines loaded by JavaScript -->
+                        </div>
+                        <div class="deadline-timer">
+                            <div class="timer" id="deadlineTimer">
+                                <!-- Timer will be updated by JavaScript -->
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Right Column - Entries -->
+                <div class="diary-column">
+                    <!-- Entries Header -->
+                    <div class="entries-header">
+                        <h2 class="section-title">Последние Записи</h2>
+                        <button class="btn btn-primary" id="addEntryBtn">
+                            + Новая Запись
+                        </button>
+                    </div>
+
+                    <!-- Entries List -->
+                    <div class="entries-container">
+                        <div class="entries-list" id="entriesList">
+                            <!-- Entries loaded by JavaScript -->
+                        </div>
+                        
+                        <!-- Empty State -->
+                        <div class="empty-state" id="noEntries" style="display: none;">
+                            <p>Записей пока нет</p>
+                            <button class="btn btn-outline" id="createFirstEntry">Создать первую запись</button>
+                        </div>
+                    </div>
+
+                    <!-- Learning Resources -->
+                    <section class="resources-section">
+                        <h2 class="section-title">Полезные Ресурсы</h2>
+                        <div class="resources-list">
+                            <div class="resource-card">
+                                <h4>MDN Web Docs</h4>
+                                <p>Документация по веб-технологиям</p>
+                                <a href="#" class="resource-link">Посетить →</a>
+                            </div>
+                            <div class="resource-card">
+                                <h4>React Documentation</h4>
+                                <p>Официальная документация React</p>
+                                <a href="#" class="resource-link">Посетить →</a>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Entry Modal -->
+    <div class="modal" id="addEntryModal">
+        <div class="modal-content">
+            <button class="modal-close" id="entryModalClose">&times;</button>
+            <h2 class="modal-title">Новая Запись</h2>
+            <form class="entry-form" id="entryForm">
+                <div class="form-group">
+                    <label for="entryTitle">Заголовок</label>
+                    <input type="text" id="entryTitle" required maxlength="100">
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryCategory">Категория</label>
+                    <select id="entryCategory">
+                        <option value="study">Учёба</option>
+                        <option value="project">Проект</option>
+                        <option value="practice">Практика</option>
+                        <option value="theory">Теория</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryContent">Содержание</label>
+                    <textarea id="entryContent" rows="6" required placeholder="Опишите что вы изучили или над чем работали..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryTags">Теги (через запятую)</label>
+                    <input type="text" id="entryTags" placeholder="JavaScript, React, CSS">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Сохранить Запись</button>
+                    <button type="button" class="btn btn-outline" id="cancelEntry">Отмена</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Учебный дневник Ивана Иванова</p>
+                <div class="footer-info">
+                    <span>Обновлено: <span id="lastDiaryUpdate">сегодня</span></span>
+                </div>
+            </div>
+        </div>
     </footer>
+
+    <script src="../scripts/core.js"></script>
+    <script src="../scripts/diary.js"></script>
 </body>
 </html>

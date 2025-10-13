@@ -2,102 +2,188 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Контакты - Портфолио</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты - Иван Иванов</title>
     <link rel="stylesheet" href="../styles/styles.css">
 </head>
 <body>
-    <!-- Переключатель темы -->
     <div class="theme-switch">
-        <button class="theme-toggle">🌓</button>
+        <button class="theme-toggle" id="themeToggle">🌓</button>
     </div>
 
-    <!-- Счетчик посещений -->
-    <div class="visit-counter"></div>
+    <div class="visit-counter" id="visitCounter"></div>
 
-    <header>
-        <div class="header-with-logo">
+    <header class="header">
+        <div class="nav-container">
             <div class="logo">
-                <img src="../images/logo.svg" alt="Логотип" class="logo-svg">
-                <span class="logo-text">Имя Студента</span>
+                <div class="logo-icon">{</div>
+                <span class="logo-text">DevPortfolio</span>
+                <div class="logo-icon">}</div>
             </div>
-            <nav class="nav-under-logo">
-                <ul>
-                    <li><a href="../index.html">Главная</a></li>
-                    <li><a href="projects.html">Проекты</a></li>
-                    <li><a href="diary.html">Дневник</a></li>
-                    <li><a href="contacts.html">Контакты</a></li>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="../index.html" class="nav-link">Главная</a></li>
+                    <li><a href="projects.html" class="nav-link">Проекты</a></li>
+                    <li><a href="diary.html" class="nav-link">Дневник</a></li>
+                    <li><a href="contacts.html" class="nav-link active">Контакты</a></li>
                 </ul>
             </nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
         </div>
     </header>
 
-    <div class="container">
-        <h2>Свяжитесь со мной</h2>
-        
-        <div class="contact-content">
-            <div class="contact-form-section">
-                <form id="contactForm">
-                    <label for="name">Имя:</label>
-                    <input type="text" id="name" name="name" required 
-                           placeholder="Ваше имя" minlength="2">
-
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required 
-                           placeholder="your@email.com">
-
-                    <label for="message">Сообщение:</label>
-                    <textarea id="message" name="message" rows="5" required 
-                              placeholder="Ваше сообщение..." minlength="10"></textarea>
-
-                    <button type="submit">📨 Отправить сообщение</button>
-                </form>
-                
-                <div class="form-message"></div>
+    <main class="contacts-page">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Свяжитесь Со Мной</h1>
+                <p class="page-subtitle">Готов к новым вызовам и сотрудничеству</p>
             </div>
 
-            <div class="contact-info-section">
-                <h3>Контакты:</h3>
-                <div class="contact-item">
-                    <strong>📧 Email:</strong> 
-                    <a href="mailto:student@edu.ru">student@edu.ru</a>
+            <div class="contacts-layout">
+                <!-- Contact Form -->
+                <div class="contacts-column">
+                    <section class="contact-form-section">
+                        <h2 class="section-title">Отправить Сообщение</h2>
+                        <form class="contact-form" id="contactForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="contactName">Имя *</label>
+                                    <input type="text" id="contactName" required minlength="2">
+                                    <span class="error-message" id="nameError"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactEmail">Email *</label>
+                                    <input type="email" id="contactEmail" required>
+                                    <span class="error-message" id="emailError"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contactSubject">Тема</label>
+                                <input type="text" id="contactSubject" maxlength="100">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contactMessage">Сообщение *</label>
+                                <textarea id="contactMessage" rows="6" required minlength="10" 
+                                         placeholder="Расскажите о вашем проекте или задайте вопрос..."></textarea>
+                                <span class="error-message" id="messageError"></span>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary" id="submitBtn">
+                                    <span class="btn-text">Отправить Сообщение</span>
+                                    <div class="btn-loading" style="display: none;">🔄</div>
+                                </button>
+                                <button type="button" class="btn btn-outline" id="clearForm">
+                                    Очистить
+                                </button>
+                            </div>
+                            
+                            <div class="form-message" id="formMessage"></div>
+                        </form>
+                    </section>
                 </div>
-                <div class="contact-item">
-                    <strong>🐙 GitHub:</strong> 
-                    <a href="https://github.com/username" target="_blank">username</a>
-                </div>
-                <div class="contact-item">
-                    <strong>🏠 Адрес:</strong> 
-                    <span>Город, Страна</span>
-                </div>
-                
-                <div class="social-links">
-                    <button onclick="portfolio.openSocial('telegram')">Telegram</button>
-                    <button onclick="portfolio.openSocial('linkedin')">LinkedIn</button>
-                    <button onclick="portfolio.openSocial('github')">GitHub</button>
+
+                <!-- Contact Info & Map -->
+                <div class="contacts-column">
+                    <!-- Contact Information -->
+                    <section class="contact-info-section">
+                        <h2 class="section-title">Контактная Информация</h2>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <div class="contact-icon">📧</div>
+                                <div class="contact-details">
+                                    <strong>Email</strong>
+                                    <a href="mailto:ivan.ivanov@edu.ru">ivan.ivanov@edu.ru</a>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <div class="contact-icon">🐙</div>
+                                <div class="contact-details">
+                                    <strong>GitHub</strong>
+                                    <a href="https://github.com/ivan-ivanov" target="_blank">github.com/ivan-ivanov</a>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <div class="contact-icon">💼</div>
+                                <div class="contact-details">
+                                    <strong>LinkedIn</strong>
+                                    <a href="#" target="_blank">linkedin.com/in/ivan-ivanov</a>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <div class="contact-icon">🏠</div>
+                                <div class="contact-details">
+                                    <strong>Местоположение</strong>
+                                    <span>Москва, Россия</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Map Section -->
+                    <section class="map-section">
+                        <h2 class="section-title">Я на Карте</h2>
+                        <div class="map-container" id="mapContainer">
+                            <div class="map-placeholder" id="mapPlaceholder">
+                                <p>Загрузка карты...</p>
+                                <button class="btn btn-outline" id="loadMapBtn">Показать карту</button>
+                            </div>
+                            <div id="map" style="display: none; height: 300px;"></div>
+                        </div>
+                    </section>
+
+                    <!-- Social Links -->
+                    <section class="social-section">
+                        <h2 class="section-title">Социальные Сети</h2>
+                        <div class="social-links">
+                            <button class="social-btn" data-platform="github" onclick="portfolio.openSocial('github')">
+                                <span class="social-icon">🐙</span>
+                                GitHub
+                            </button>
+                            <button class="social-btn" data-platform="telegram" onclick="portfolio.openSocial('telegram')">
+                                <span class="social-icon">✈️</span>
+                                Telegram
+                            </button>
+                            <button class="social-btn" data-platform="linkedin" onclick="portfolio.openSocial('linkedin')">
+                                <span class="social-icon">💼</span>
+                                LinkedIn
+                            </button>
+                        </div>
+                    </section>
                 </div>
             </div>
         </div>
+    </main>
 
-        <!-- Яндекс Карта -->
-        <section class="map-section">
-            <h3>Я на карте</h3>
-            <div id="map" class="map-container">
-                <div class="map-placeholder">
-                    Загрузка карты...
-                    <button onclick="initMapFallback()" style="margin-top: 10px;">
-                        Загрузить карту
-                    </button>
-                </div>
-            </div>
-        </section>
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="success-icon">✅</div>
+            <h2 class="modal-title">Сообщение Отправлено!</h2>
+            <p>Спасибо за ваше сообщение. Я свяжусь с вами в ближайшее время.</p>
+            <button class="btn btn-primary" id="successClose">OK</button>
+        </div>
     </div>
 
-    <footer>
-        <p>© 2025 Портфолио студента. Все права защищены.</p>
-        <p>Посетителей сегодня: <span id="dailyCounter">0</span></p>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Иван Иванов. Все права защищены.</p>
+                <a href="../index.html" class="back-link">← На главную</a>
+            </div>
+        </div>
     </footer>
 
-    <script src="../scripts/main.js"></script>
-    <script src="../scripts/map.js"></script>
+    <!-- Яндекс Карты API -->
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=your_api_key&lang=ru_RU" type="text/javascript"></script>
+    
+    <script src="../scripts/core.js"></script>
+    <script src="../scripts/contacts.js"></script>
 </body>
 </html>

@@ -2,34 +2,114 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Проекты</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проекты - Иван Иванов</title>
     <link rel="stylesheet" href="../styles/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Kirill.portfolio</h1>
-        <nav>
-            <ul>
-                <li><a href="../index.html">Главная</a></li>
-                <li><a href="projects.html">Проекты</a></li>
-                <li><a href="diary.html">Дневник</a></li>
-                <li><a href="contacts.html">Контакты</a></li>
-            </ul>
-        </nav>
+    <div class="theme-switch">
+        <button class="theme-toggle" id="themeToggle">🌓</button>
+    </div>
+
+    <div class="visit-counter" id="visitCounter"></div>
+
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">{</div>
+                <span class="logo-text">DevPortfolio</span>
+                <div class="logo-icon">}</div>
+            </div>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="../index.html" class="nav-link">Главная</a></li>
+                    <li><a href="projects.html" class="nav-link active">Проекты</a></li>
+                    <li><a href="diary.html" class="nav-link">Дневник</a></li>
+                    <li><a href="contacts.html" class="nav-link">Контакты</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        </div>
     </header>
 
-    <div class="container">
-        <h2>Мои проекты</h2>
-        <div class="projects-grid">
-            <div class="project-card">
-                <h3>Личный сайт "Kirill.portfolio"</h3>
-                <p>HTML, CSS</p>
+    <main class="projects-page">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Мои Проекты</h1>
+                <p class="page-subtitle">Коллекция учебных и личных проектов</p>
+                
+                <!-- Search and Filters -->
+                <div class="projects-controls">
+                    <div class="search-box">
+                        <input type="text" id="projectSearch" placeholder="Поиск проектов..." class="search-input">
+                        <button class="search-btn" id="searchBtn">🔍</button>
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="categoryFilter" class="filter-select">
+                            <option value="all">Все категории</option>
+                            <option value="react">React</option>
+                            <option value="javascript">JavaScript</option>
+                            <option value="html">HTML/CSS</option>
+                            <option value="fullstack">FullStack</option>
+                        </select>
+                        
+                        <select id="sortFilter" class="filter-select">
+                            <option value="newest">Сначала новые</option>
+                            <option value="oldest">Сначала старые</option>
+                            <option value="name">По названию</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="projects-container">
+                <div class="projects-grid" id="projectsGrid">
+                    <!-- Projects loaded by JavaScript -->
+                </div>
+                
+                <!-- Loading State -->
+                <div class="loading-state" id="loadingState">
+                    <div class="loading-spinner"></div>
+                    <p>Загрузка проектов...</p>
+                </div>
+                
+                <!-- Empty State -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <p>Проекты не найдены</p>
+                    <button class="btn btn-outline" id="resetFilters">Сбросить фильтры</button>
+                </div>
+            </div>
+
+            <!-- Load More -->
+            <div class="load-more-container">
+                <button class="btn btn-outline" id="loadMoreBtn">Загрузить еще</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Project Modal -->
+    <div class="modal" id="projectModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-body" id="modalBody">
+                <!-- Modal content loaded by JavaScript -->
             </div>
         </div>
     </div>
 
-    <footer>
-        <p>© 2025 Проекты студента.</p>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Иван Иванов. Все права защищены.</p>
+                <a href="../index.html" class="back-link">← На главную</a>
+            </div>
+        </div>
     </footer>
+
+    <script src="../scripts/core.js"></script>
+    <script src="../scripts/projects.js"></script>
 </body>
 </html>
