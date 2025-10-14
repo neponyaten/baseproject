@@ -3,37 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DEV NEPONYATEN — Trash Player</title>
+  <title>DEV NEPONYATEN — Trash Player ++</title>
   <link rel="stylesheet" href="../styles/styles.css">
   <style>
-    :root{ --accent:#ff4d6d; }
-    body { overflow-x:hidden; }
-    .player-wrap{ display:grid; gap:1rem; grid-template-columns: 1fr; }
-    @media(min-width:900px){ .player-wrap{ grid-template-columns: 1.1fr .9fr; } }
-    .panel{ background: rgba(0,0,0,.03); border: 1px solid rgba(0,0,0,.08); border-radius: 14px; padding: 1rem; }
-    .controls{ display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; }
-    .disc{ width:78px; height:78px; border-radius:50%; background:
-      radial-gradient(circle at 50% 50%, #000 0 20%, #222 21% 60%, #000 61% 100%);
-      position:relative; box-shadow: inset 0 0 0 3px #111, 0 8px 24px rgba(0,0,0,.2);
-      animation: spin 6s linear infinite; margin-right:.5rem;
-    }
-    .disc::after{ content:''; position:absolute; inset:50% auto auto 50%; width:16px;height:16px; background:#eaeaea;
-      transform: translate(-50%, -50%); border-radius:50%; box-shadow: inset 0 0 0 4px #c9c9c9; }
-    @keyframes spin{ to{ transform: rotate(360deg); } }
-    .canvas-wrap{ position:relative; border-radius:12px; overflow:hidden; background:#0f1020; }
-    #wave{ width:100%; height:280px; display:block; }
+    .panel{ background: rgba(0,0,0,.03); border:1px solid rgba(0,0,0,.08); border-radius:12px; padding:1rem; }
+    .controls{ display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; justify-content:space-between; }
     .tracklist{ display:flex; flex-direction:column; gap:.5rem; max-height:420px; overflow:auto; }
-    .track{ display:flex; align-items:center; gap:.6rem; padding:.45rem .6rem; border-radius:10px;
-      background:#f7f7fb; border:1px solid #e9e9f2; cursor:pointer; transition: transform .12s ease, background .12s ease; }
-    .track:hover{ transform: translateY(-2px); }
-    .track.active{ outline:2px solid var(--accent); background:#ffe3ea; }
+    .track{ display:flex; gap:.6rem; align-items:center; padding:.45rem .6rem; border-radius:10px; border:1px solid #e9e9f2; background:#f7f7fb; cursor:pointer; }
+    .track.active{ outline:2px solid #ff4d6d; background:#ffe3ea; }
     .pill{ font-size:.75rem; padding:.1rem .45rem; border-radius:999px; background:#0000000d; }
-    .fall{ position:fixed; left:0; top:-10vh; right:0; text-align:center; font-weight:800;
-      font-size: clamp(1rem, 3vw, 1.6rem); color:#111; text-shadow:0 2px 0 #fff;
-      animation: fall 1.5s linear forwards; pointer-events:none; z-index:9999;
-    }
-    @keyframes fall{ to{ transform: translateY(115vh) rotate(5deg); opacity:.3; } }
-    .shake{ animation: shake .3s linear; }
+    .canvas-wrap{ border-radius:12px; overflow:hidden; background:#0f1020; }
+    #wave{ width:100%; height:280px; display:block; }
+
+    /* Trash effects */
+    .shake{ animation: shake .25s linear; }
     @keyframes shake{
       15%{ transform: translate(2px, -2px) rotate(-0.5deg); }
       35%{ transform: translate(-2px, 1px) rotate(0.6deg); }
@@ -41,6 +24,11 @@
       75%{ transform: translate(-2px, -2px) rotate(-0.3deg); }
       100%{ transform: translate(0, 0) rotate(0); }
     }
+    .fall{ position:fixed; left:0; top:-10vh; right:0; text-align:center; font-weight:800;
+      font-size: clamp(1rem, 3vw, 1.6rem); color:#111; text-shadow:0 2px 0 #fff;
+      animation: fall 1.5s linear forwards; pointer-events:none; z-index:9999; }
+    @keyframes fall{ to{ transform: translateY(115vh) rotate(5deg); opacity:.3; } }
+    .strobe{ filter: hue-rotate(30deg) saturate(1.25) brightness(1.12); transition: filter .12s linear; }
   </style>
 </head>
 <body>
@@ -68,39 +56,34 @@
 
   <main class="main-content">
     <div class="container">
-      <h1 class="section-title" style="display:flex; align-items:center; gap:.6rem;">
-        <div class="disc" id="disc"></div>
-        TRASH Audio Player
-      </h1>
+      <h1 class="section-title">Trash Player ++</h1>
 
-      <div class="player-wrap">
-        <div class="panel">
-          <div class="controls" style="justify-content:space-between; margin-bottom:.6rem;">
-            <div class="controls">
-              <button class="btn" id="playBtn">▶</button>
-              <button class="btn btn-outline" id="prevBtn">⏮</button>
-              <button class="btn btn-outline" id="nextBtn">⏭</button>
-              <button class="btn btn-outline" id="shuffleBtn" title="Случайный порядок">🔀</button>
-            </div>
-            <div class="controls">
-              <label class="tiny">Громкость</label>
-              <input type="range" id="vol" min="0" max="1" step="0.01" value="0.9">
-            </div>
+      <div class="panel">
+        <div class="controls">
+          <div>
+            <button class="btn" id="playBtn">▶</button>
+            <button class="btn btn-outline" id="prevBtn">⏮</button>
+            <button class="btn btn-outline" id="nextBtn">⏭</button>
+            <button class="btn btn-outline" id="shuffleBtn">🔀</button>
+            <button class="btn btn-outline" id="trashToggle">🔥 TRASH</button>
           </div>
-
-          <div class="canvas-wrap">
-            <canvas id="wave"></canvas>
+          <div>
+            <label class="tiny">Громкость</label>
+            <input type="range" id="vol" min="0" max="1" step="0.01" value="0.9">
           </div>
-          <div id="now" class="tiny" style="margin-top:.6rem;">—</div>
-
-          <audio id="player" crossorigin="anonymous"></audio>
         </div>
 
-        <div class="panel">
-          <h3 style="margin-top:0;">Треки</h3>
-          <div class="tracklist" id="list"></div>
-          <p class="tiny" style="margin-top:.6rem;">Добавь свои MP3 в <code>assets/music/</code> и укажи их в <code>music.js</code>.</p>
+        <div class="canvas-wrap" style="margin-top:.6rem;">
+          <canvas id="wave"></canvas>
         </div>
+        <div id="now" class="tiny" style="margin-top:.6rem;">—</div>
+
+        <audio id="player" crossorigin="anonymous"></audio>
+      </div>
+
+      <div class="panel" style="margin-top:1rem;">
+        <h3 style="margin-top:0;">Треки</h3>
+        <div id="list" class="tracklist"></div>
       </div>
     </div>
   </main>

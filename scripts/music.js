@@ -1,4 +1,4 @@
-// scripts/animations/music.js (strict stable build)
+// scripts/animations/music.js (trash boost build)
 (function(){
   'use strict';
   const $ = (s, r=document)=>r.querySelector(s);
@@ -6,8 +6,8 @@
 
   // ==== CONFIG: укажи свои треки ====
   const tracks = [
-    { title: 'Мой трек 1', src: '../assets/music/minipops67.mp3' },
-    { title: 'Мой трек 2', src: '../assets/music/gufymer.mp3' },
+    { title: 'Гуф', src: '../assets/music/gufymer.mp3' },
+    { title: 'Aphex Twin - mini pops 67', src: '../assets/music/minipops67.mp3' },
   ];
 
   // ==== DOM ====
@@ -17,32 +17,25 @@
   const prevBtn = $('#prevBtn');
   const nextBtn = $('#nextBtn');
   const shuffleBtn = $('#shuffleBtn');
+  const trashToggle = $('#trashToggle');
   const vol = $('#vol');
   const now = $('#now');
   const list = $('#list');
+  const logoSpan = document.querySelector('.logo span');
 
   // ==== STATE ====
-  let ctx = null;
-  let srcNode = null;
-  let analyser = null;
-  let gain = null;
-  let dataArr = null;
-  let raf = 0;
+  let ctx = null, srcNode = null, analyser = null, gain = null, dataArr = null, raf = 0;
   let index = 0;
   let shuffle = JSON.parse(localStorage.getItem('trash-shuffle') || 'true');
-
-  // ==== SAFETY ====
-  window.addEventListener('error', (e)=>{
-    console.warn('[global] Uncaught:', e.message);
-  });
+  let continuousTrash = false;
+  let flipLock = false;
+  const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Разлочим аудио-контекст первым жестом
   (function unlockAudio(){
     const resume = async () => {
-      try {
-        if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-        if (ctx.state === 'suspended') await ctx.resume();
-      } catch(e) { console.warn('[audio] resume fail', e); }
+      try { if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+            if (ctx.state === 'suspended') await ctx.resume(); } catch(e) {}
       document.removeEventListener('click', resume);
       document.removeEventListener('touchstart', resume);
     };
@@ -92,17 +85,63 @@
       resize();
       analyser.getByteTimeDomainData(dataArr);
       cx.clearRect(0,0,canvas.width,canvas.height);
-      cx.beginPath();
-      cx.strokeStyle = grad();
+
+      // RMS (псевдо-бас)
+      let sum=0;
+      for (let i=0;i<dataArr.length;i++){ const d=(dataArr[i]-128)/128; sum+=d*d; }
+      const rms = Math.sqrt(sum/dataArr.length);
+
+      // baseline
+      cx.globalAlpha = 0.85;
+      cx.beginPath(); cx.strokeStyle = '#ffffff18';
+      cx.moveTo(0, canvas.height/2); cx.lineTo(canvas.width, canvas.height/2); cx.stroke();
+
+      // waveform
+      cx.globalAlpha = 1;
+      cx.beginPath(); cx.strokeStyle = grad();
       const slice = canvas.width / dataArr.length;
-      for (let i=0, x=0; i<dataArr.length; i++, x+=slice){
-        const y = (dataArr[i]/128.0) * (canvas.height/2);
-        if (i===0) cx.moveTo(0,y); else cx.lineTo(x,y);
+      for (let i=0,x=0;i<dataArr.length;i++,x+=slice){
+        const y = (dataArr[i]/128.0)*(canvas.height/2);
+        (i===0?cx.moveTo(0,y):cx.lineTo(x,y));
       }
-      cx.lineWidth = 2; cx.stroke();
+      cx.lineWidth = Math.max(1.5, 1.5 + rms*3);
+      cx.stroke();
+
+      // === Trash FX ===
+      if (!prefersReduced && (rms > 0.20 || continuousTrash)) {
+        document.body.classList.add('shake');
+        setTimeout(()=>document.body.classList.remove('shake'), 160);
+
+        // strobe pulse
+        document.body.classList.add('strobe');
+        setTimeout(()=>document.body.classList.remove('strobe'), 120);
+
+        // falling text
+        spawnFall();
+
+        // logo flip
+        if (!flipLock && logoSpan){
+          flipLock = true;
+          const orig = logoSpan.textContent;
+          logoSpan.textContent = '{ DJ Dev }';
+          setTimeout(()=>{ logoSpan.textContent = orig; flipLock = false; }, 900);
+        }
+      }
+
       raf = requestAnimationFrame(tick);
     }
     raf = requestAnimationFrame(tick);
+  }
+
+  function spawnFall(){
+    const el = document.createElement('div');
+    el.className = 'fall';
+    const words = ['BASS!', 'DROP!', 'TRASH!', 'DJ DEV!', 'BOOM!', 'WAVE!', '🔥', '🎵'];
+    el.textContent = words[Math.floor(Math.random()*words.length)];
+    el.style.color = ['#111','#333','#555'][Math.floor(Math.random()*3)];
+    el.style.transform = `rotate(${(Math.random()*10-5)}deg)`;
+    document.body.appendChild(el);
+    setTimeout(()=> el.remove(), 1500);
   }
 
   function renderList(){
@@ -115,10 +154,7 @@
       </div>
     `).join('');
     $$('#list .track').forEach(el=>{
-      el.addEventListener('click', ()=>{
-        index = +el.dataset.i;
-        select(index, true);
-      });
+      el.addEventListener('click', ()=>{ index = +el.dataset.i; select(index, true); });
     });
   }
 
@@ -136,16 +172,14 @@
 
     const onCanPlay = async () => {
       audio.removeEventListener('canplay', onCanPlay);
-      try {
-        if (autoplay) await audio.play();
-      } catch(e) { console.warn('[audio] play failed', e); }
+      try { if (autoplay) await audio.play(); } catch(e) { console.warn('[audio] play failed', e); }
     };
     audio.addEventListener('canplay', onCanPlay);
 
     audio.onerror = (e) => {
       const code = (audio.error && audio.error.code) || 0;
       console.warn('[audio] error', code, t.src, e);
-      alert('Ошибка загрузки аудио. Проверь путь и что ты открыл страницу через http://localhost:...');
+      alert('Ошибка загрузки аудио. Проверь путь и что открыто через http://localhost:... или GitHub Pages.');
     };
   }
 
@@ -180,13 +214,26 @@
     localStorage.setItem('trash-shuffle', JSON.stringify(shuffle));
     alert(shuffle ? '🔀 Случайный порядок' : '➡️ По порядку');
   });
+  trashToggle?.addEventListener('click', ()=>{
+    continuousTrash = !continuousTrash;
+    alert(continuousTrash ? '🔥 TRASH MODE — ВКЛ' : '🔥 TRASH MODE — ВЫКЛ');
+  });
   vol?.addEventListener('input', ()=> audio.volume = +vol.value);
-
   audio?.addEventListener('play', async ()=>{
     try { if (ctx && ctx.state==='suspended') await ctx.resume(); } catch {}
     playBtn.textContent='⏸';
   });
   audio?.addEventListener('pause', ()=> playBtn.textContent='▶');
+  audio?.addEventListener('ended', ()=> select(nextIndex(), true));
+
+  // Hotkeys
+  document.addEventListener('keydown', (e)=>{
+    if (['INPUT','TEXTAREA'].includes((e.target.tagName||'').toUpperCase())) return;
+    if (e.code==='Space'){ e.preventDefault(); playBtn.click(); }
+    if (e.code==='ArrowRight'){ nextBtn.click(); }
+    if (e.code==='ArrowLeft'){ prevBtn.click(); }
+    if (e.key.toLowerCase()==='t'){ trashToggle.click(); }
+  });
 
   // Init
   document.addEventListener('DOMContentLoaded', ()=>{
