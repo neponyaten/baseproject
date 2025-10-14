@@ -28,22 +28,10 @@
     const list = load();
     if (list.length) return;
     const seed = [
-      { id: uid(), title: 'E-Commerce Platform', date: '2024-11-15',
-        tags: ['React','Node.js','MongoDB','Stripe'],
-        desc: 'Полнофункциональный интернет-магазин с системой управления заказами и платежами',
+      { id: uid(), title: 'Сеть магазинов "Троечка', date: '2024-11-15',
+        tags: ['JavaScript','CSS','HTML'],
+        desc: 'Полнофункциональный интернет-магазин',
         cover: '', demo: '', code: '' },
-      { id: uid(), title: 'Task Management App', date: '2024-10-02',
-        tags: ['React','TypeScript','Firebase','MUI'],
-        desc: 'Приложение для управления задачами с командной работой и уведомлениями',
-        cover: '', demo: '', code: '' },
-      { id: uid(), title: 'Weather Dashboard', date: '2024-09-12',
-        tags: ['JavaScript','Chart.js','OpenWeather'],
-        desc: 'Интерактивная панель погоды с расширенными прогнозами и картами',
-        cover: '', demo: '', code: '' },
-      { id: uid(), title: 'Portfolio Website', date: '2024-08-20',
-        tags: ['HTML','CSS','JavaScript'],
-        desc: 'Адаптивный веб-сайт портфолио с современным дизайном и анимациями',
-        cover: '', demo: '', code: '' }
     ];
     save(seed);
   }

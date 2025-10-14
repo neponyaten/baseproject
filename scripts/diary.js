@@ -27,17 +27,17 @@
     const seed = [
       {
         id: uid(),
-        title: 'Изучение React Hooks',
-        date: '2024-12-15',
-        tags: ['react','hooks'],
-        text: 'Глубокое погружение в работу хуков useState, useEffect и создание кастомных хуков.'
+        title: 'Создание сайта "Троечка"',
+        date: '02.10.2025',
+        tags: ['css','html'],
+        text: 'Создание различных вёрсток.'
       },
       {
         id: uid(),
-        title: 'Оптимизация производительности',
-        date: '2024-12-10',
-        tags: ['performance','memoization','lazy'],
-        text: 'Изучение методов мемоизации, ленивой загрузки и оптимизации рендеринга в React.'
+        title: 'Сайт портфолио',
+        date: '14.10.2025',
+        tags: ['jss','html','css'],
+        text: 'Создание плеера, различных эффектов...'
       }
     ];
     saveEntries(seed);
@@ -190,12 +190,10 @@
     bars.forEach(b=>io.observe(b));
   }
 
-  // маленькая конфетти-анимация при первом добавлении на сессии
   let confettiShown = false;
   function confettiOnce(){
     if (confettiShown || prefersReduced) return;
     confettiShown = true;
-    // простая анимация на canvas поверх кнопки "Сохранить"
     const btn = document.getElementById('saveBtn');
     const rect = btn.getBoundingClientRect();
     const canvas = document.createElement('canvas');
@@ -226,7 +224,6 @@
     requestAnimationFrame(step);
   }
 
-  // ----- Search & Export -----
   function initSearch(){
     const input = $('#searchInput');
     if (!input) return;
@@ -244,7 +241,6 @@
     });
   }
 
-  // ----- Init -----
   document.addEventListener('DOMContentLoaded', () => {
     ensureSeed();
     revealOnLoad();
@@ -252,7 +248,6 @@
     initSearch();
     initExport();
 
-    // кнопки
     $('#addEntryBtn')?.addEventListener('click', ()=> openModal('add'));
     $('#cancelBtn')?.addEventListener('click', closeModal);
     $('#closeModalBtn')?.addEventListener('click', closeModal);
@@ -262,7 +257,6 @@
     $('#entryModal')?.addEventListener('click', (e)=>{ if (e.target.id === 'entryModal') closeModal(); });
     document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') closeModal(); });
 
-    // scroll reveal для поздно добавленных элементов
     revealOnScroll();
   });
 })();
