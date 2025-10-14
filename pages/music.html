@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEV NEPONYATEN — Trash Player</title>
+  <link rel="stylesheet" href="../styles/styles.css">
+  <style>
+    :root{ --accent:#ff4d6d; }
+    body { overflow-x:hidden; }
+    .player-wrap{ display:grid; gap:1rem; grid-template-columns: 1fr; }
+    @media(min-width:900px){ .player-wrap{ grid-template-columns: 1.1fr .9fr; } }
+    .panel{ background: rgba(0,0,0,.03); border: 1px solid rgba(0,0,0,.08); border-radius: 14px; padding: 1rem; }
+    .controls{ display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; }
+    .disc{ width:78px; height:78px; border-radius:50%; background:
+      radial-gradient(circle at 50% 50%, #000 0 20%, #222 21% 60%, #000 61% 100%);
+      position:relative; box-shadow: inset 0 0 0 3px #111, 0 8px 24px rgba(0,0,0,.2);
+      animation: spin 6s linear infinite; margin-right:.5rem;
+    }
+    .disc::after{ content:''; position:absolute; inset:50% auto auto 50%; width:16px;height:16px; background:#eaeaea;
+      transform: translate(-50%, -50%); border-radius:50%; box-shadow: inset 0 0 0 4px #c9c9c9; }
+    @keyframes spin{ to{ transform: rotate(360deg); } }
+    .canvas-wrap{ position:relative; border-radius:12px; overflow:hidden; background:#0f1020; }
+    #wave{ width:100%; height:280px; display:block; }
+    .tracklist{ display:flex; flex-direction:column; gap:.5rem; max-height:420px; overflow:auto; }
+    .track{ display:flex; align-items:center; gap:.6rem; padding:.45rem .6rem; border-radius:10px;
+      background:#f7f7fb; border:1px solid #e9e9f2; cursor:pointer; transition: transform .12s ease, background .12s ease; }
+    .track:hover{ transform: translateY(-2px); }
+    .track.active{ outline:2px solid var(--accent); background:#ffe3ea; }
+    .pill{ font-size:.75rem; padding:.1rem .45rem; border-radius:999px; background:#0000000d; }
+    .fall{ position:fixed; left:0; top:-10vh; right:0; text-align:center; font-weight:800;
+      font-size: clamp(1rem, 3vw, 1.6rem); color:#111; text-shadow:0 2px 0 #fff;
+      animation: fall 1.5s linear forwards; pointer-events:none; z-index:9999;
+    }
+    @keyframes fall{ to{ transform: translateY(115vh) rotate(5deg); opacity:.3; } }
+    .shake{ animation: shake .3s linear; }
+    @keyframes shake{
+      15%{ transform: translate(2px, -2px) rotate(-0.5deg); }
+      35%{ transform: translate(-2px, 1px) rotate(0.6deg); }
+      55%{ transform: translate(3px, 1px) rotate(0.2deg); }
+      75%{ transform: translate(-2px, -2px) rotate(-0.3deg); }
+      100%{ transform: translate(0, 0) rotate(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="theme-switch">
+    <button class="theme-toggle" id="themeToggle">🌓</button>
+  </div>
+
+  <header class="header">
+    <div class="container">
+      <div class="nav-container">
+        <div class="logo"><span>{ DevPortfolio }</span></div>
+        <nav class="nav">
+          <ul class="nav-list">
+            <li><a href="../index.html" class="nav-link">Главная</a></li>
+            <li><a href="projects.html" class="nav-link">Проекты</a></li>
+            <li><a href="diary.html" class="nav-link">Дневник</a></li>
+            <li><a href="contacts.html" class="nav-link">Контакты</a></li>
+            <li><a href="music.html" class="nav-link active">Музыка</a></li>
+          </ul>
+        </nav>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <h1 class="section-title" style="display:flex; align-items:center; gap:.6rem;">
+        <div class="disc" id="disc"></div>
+        TRASH Audio Player
+      </h1>
+
+      <div class="player-wrap">
+        <div class="panel">
+          <div class="controls" style="justify-content:space-between; margin-bottom:.6rem;">
+            <div class="controls">
+              <button class="btn" id="playBtn">▶</button>
+              <button class="btn btn-outline" id="prevBtn">⏮</button>
+              <button class="btn btn-outline" id="nextBtn">⏭</button>
+              <button class="btn btn-outline" id="shuffleBtn" title="Случайный порядок">🔀</button>
+            </div>
+            <div class="controls">
+              <label class="tiny">Громкость</label>
+              <input type="range" id="vol" min="0" max="1" step="0.01" value="0.9">
+            </div>
+          </div>
+
+          <div class="canvas-wrap">
+            <canvas id="wave"></canvas>
+          </div>
+          <div id="now" class="tiny" style="margin-top:.6rem;">—</div>
+
+          <audio id="player" crossorigin="anonymous"></audio>
+        </div>
+
+        <div class="panel">
+          <h3 style="margin-top:0;">Треки</h3>
+          <div class="tracklist" id="list"></div>
+          <p class="tiny" style="margin-top:.6rem;">Добавь свои MP3 в <code>assets/music/</code> и укажи их в <code>music.js</code>.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Чекунов Кирилл.</p>
+      <a href="../index.html" style="color: inherit;">← На главную</a>
+    </div>
+  </footer>
+
+  <script src="../scripts/core.js"></script>
+  <script src="../scripts/music.js"></script>
+</body>
+</html>

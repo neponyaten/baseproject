@@ -1,100 +1,142 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Проекты - Иван Иванов</title>
-    <link rel="stylesheet" href="../styles/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DEV NEPONYATEN — Проекты</title>
+  <link rel="stylesheet" href="../styles/styles.css">
+  <style>
+    /* лёгкие анимации и стили */
+    .fade-in-up { opacity:0; transform: translateY(16px); transition: opacity .5s ease, transform .5s ease; }
+    .fade-in-up.in { opacity:1; transform: translateY(0); }
+    .projects-toolbar { display:flex; gap:.75rem; align-items:center; flex-wrap:wrap; margin:1rem 0 1.25rem; }
+    .projects-toolbar input[type="search"] { flex:1 1 260px; padding:.6rem .8rem; border-radius:8px; border:1px solid rgba(0,0,0,.1); }
+    .chip { padding:.25rem .6rem; border-radius:999px; border:1px solid rgba(0,0,0,.15); font-size:.85rem; cursor:pointer; user-select:none; }
+    .chip.active { background: var(--accent, #111); color:#fff; border-color: transparent; }
+    .project-card { transition: transform .25s ease, box-shadow .25s ease; will-change: transform; }
+    .project-card:hover { transform: translateY(-6px); box-shadow: 0 10px 30px rgba(0,0,0,.08); }
+    .project-cover { width:100%; height:160px; object-fit:cover; border-radius:10px; background: #1111; }
+    .project-actions { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.75rem; }
+    .grid { display:grid; grid-template-columns: repeat(1, 1fr); gap:1rem; }
+    @media (min-width:720px){ .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width:1024px){ .grid { grid-template-columns: repeat(3, 1fr); } }
+    /* модалка */
+    .modal { position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; z-index:9999; }
+    .modal__inner { width:min(94vw, 720px); background:var(--card-bg,#111); color:var(--text,#fff); border-radius:12px; padding:1.25rem; position:relative; }
+    .modal__title { margin:0 0 .75rem; }
+    .modal__row { display:grid; gap:.5rem; margin-bottom:.75rem; }
+    .modal__actions { display:flex; gap:.75rem; justify-content:flex-end; margin-top:.5rem; }
+    .modal__close { position:absolute; right:.75rem; top:.5rem; }
+    /* наклон карточки по курсору */
+    .tilt { transform-style: preserve-3d; }
+    .tilt:hover .tilt-inner { transform: translateZ(18px); }
+  </style>
 </head>
 <body>
-    <div class="theme-switch">
-        <button class="theme-toggle" id="themeToggle">🌓</button>
+  <div class="theme-switch">
+    <button class="theme-toggle" id="themeToggle">🌓</button>
+  </div>
+
+  <div class="visit-counter" id="visitCounter">👁 1</div>
+
+  <header class="header">
+    <div class="container">
+      <div class="nav-container">
+        <div class="logo"><span>{ DevPortfolio }</span></div>
+        <nav class="nav">
+          <ul class="nav-list" id="navList">
+            <li><a href="../index.html" class="nav-link">Главная</a></li>
+            <li><a href="projects.html" class="nav-link active">Проекты</a></li>
+            <li><a href="diary.html" class="nav-link">Дневник</a></li>
+            <li><a href="contacts.html" class="nav-link">Контакты</a></li>
+            <li><a href="music.html" class="nav-link">Не открывай</a></li>
+          </ul>
+        </nav>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
     </div>
+  </header>
 
-    <div class="visit-counter" id="visitCounter">👁 1</div>
+  <main class="main-content">
+    <div class="container">
+      <h1 class="section-title fade-in-up">Мои Проекты</h1>
 
-    <header class="header">
-        <div class="container">
-            <div class="nav-container">
-                <div class="logo">
-                    <span>{ DevPortfolio }</span>
-                </div>
-                <nav class="nav">
-                    <ul class="nav-list" id="navList">
-                        <li><a href="../index.html" class="nav-link">Главная</a></li>
-                        <li><a href="projects.html" class="nav-link active">Проекты</a></li>
-                        <li><a href="diary.html" class="nav-link">Дневник</a></li>
-                        <li><a href="contacts.html" class="nav-link">Контакты</a></li>
-                    </ul>
-                </nav>
-                <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
-            </div>
+      <!-- Toolbar -->
+      <div class="projects-toolbar fade-in-up">
+        <input type="search" id="searchInput" placeholder="Поиск по названию/описанию/тегам…" />
+        <button class="btn" id="addProjectBtn">+ Добавить</button>
+        <select id="sortSelect" class="btn btn-outline" style="padding:.6rem .8rem;">
+          <option value="new">Сначала новые</option>
+          <option value="old">Сначала старые</option>
+          <option value="az">По алфавиту A→Я</option>
+          <option value="za">По алфавиту Я→A</option>
+        </select>
+      </div>
+
+      <!-- Теги быстрого фильтра -->
+      <div id="chips" class="fade-in-up" style="display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1rem;">
+        <!-- чипы с тегами создаст JS -->
+      </div>
+
+      <!-- Сетка проектов -->
+      <div id="projectsGrid" class="grid fade-in-up">
+        <!-- наполнение из JS -->
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Чекунов Кирилл.</p>
+      <a href="../index.html" style="color: inherit;">← На главную</a>
+    </div>
+  </footer>
+
+  <!-- Модалка добавления/редактирования -->
+  <div class="modal" id="projectModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal__inner">
+      <button class="btn btn-outline modal__close" id="closeModalBtn">✕</button>
+      <h3 class="modal__title" id="modalTitle">Новый проект</h3>
+      <form id="projectForm">
+        <div class="modal__row">
+          <label for="pTitle">Название *</label>
+          <input id="pTitle" type="text" required placeholder="Например: Weather Dashboard">
         </div>
-    </header>
-
-    <main class="main-content">
-        <div class="container">
-            <h1 class="section-title">Мои Проекты</h1>
-            
-            <div class="projects-grid">
-                <div class="project-card">
-                    <h3 class="project-title">E-Commerce Platform</h3>
-                    <p class="project-description">Полнофункциональный интернет-магазин с системой управления заказами и платежами</p>
-                    <div class="project-technologies">
-                        <strong>Технологии:</strong> React, Node.js, MongoDB, Stripe API
-                    </div>
-                    <div style="margin-top: 1rem;">
-                        <button class="btn" onclick="portfolio.showMessage('info', 'Демо проекта')">Демо</button>
-                        <button class="btn btn-outline" onclick="portfolio.showMessage('info', 'GitHub репозиторий')">Код</button>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <h3 class="project-title">Task Management App</h3>
-                    <p class="project-description">Приложение для управления задачами с командной работой и уведомлениями</p>
-                    <div class="project-technologies">
-                        <strong>Технологии:</strong> React, TypeScript, Firebase, Material-UI
-                    </div>
-                    <div style="margin-top: 1rem;">
-                        <button class="btn" onclick="portfolio.showMessage('info', 'Демо проекта')">Демо</button>
-                        <button class="btn btn-outline" onclick="portfolio.showMessage('info', 'GitHub репозиторий')">Код</button>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <h3 class="project-title">Weather Dashboard</h3>
-                    <p class="project-description">Интерактивная панель погоды с расширенными прогнозами и картами</p>
-                    <div class="project-technologies">
-                        <strong>Технологии:</strong> JavaScript, Chart.js, OpenWeather API
-                    </div>
-                    <div style="margin-top: 1rem;">
-                        <button class="btn" onclick="portfolio.showMessage('info', 'Демо проекта')">Демо</button>
-                        <button class="btn btn-outline" onclick="portfolio.showMessage('info', 'GitHub репозиторий')">Код</button>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <h3 class="project-title">Portfolio Website</h3>
-                    <p class="project-description">Адаптивный веб-сайт портфолио с современным дизайном и анимациями</p>
-                    <div class="project-technologies">
-                        <strong>Технологии:</strong> HTML5, CSS3, JavaScript
-                    </div>
-                    <div style="margin-top: 1rem;">
-                        <button class="btn" onclick="portfolio.showMessage('info', 'Демо проекта')">Демо</button>
-                        <button class="btn btn-outline" onclick="portfolio.showMessage('info', 'GitHub репозиторий')">Код</button>
-                    </div>
-                </div>
-            </div>
+        <div class="modal__row">
+          <label for="pDate">Дата *</label>
+          <input id="pDate" type="date" required value="{datetime.date.today().isoformat()}">
         </div>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 Иван Иванов. Все права защищены.</p>
-            <a href="../index.html" style="color: inherit;">← На главную</a>
+        <div class="modal__row">
+          <label for="pTags">Теги/технологии (через запятую)</label>
+          <input id="pTags" type="text" placeholder="react, node, chart.js">
         </div>
-    </footer>
+        <div class="modal__row">
+          <label for="pDesc">Описание *</label>
+          <textarea id="pDesc" rows="5" required placeholder="Короткое описание проекта…"></textarea>
+        </div>
+        <div class="modal__row">
+          <label for="pCover">Обложка (URL картинки)</label>
+          <input id="pCover" type="url" placeholder="https://...jpg">
+        </div>
+        <div class="modal__row">
+          <label for="pDemo">Ссылка на демо</label>
+          <input id="pDemo" type="url" placeholder="https://...">
+        </div>
+        <div class="modal__row">
+          <label for="pCode">Ссылка на репозиторий</label>
+          <input id="pCode" type="url" placeholder="https://github.com/...">
+        </div>
+        <div class="modal__actions">
+          <button type="button" class="btn btn-outline" id="cancelBtn">Отмена</button>
+          <button type="submit" class="btn" id="saveBtn">Сохранить</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-    <script src="../scripts/core.js"></script>
+  <script src="../scripts/core.js"></script>
+  <script src="../scripts/projects.js"></script>
+  <script src="scripts/enhancements.js"></script>
+  <script src="scripts/chatbot.js"></script>
 </body>
 </html>

@@ -1,173 +1,148 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Иван Иванов - Frontend Developer</title>
-    <link rel="stylesheet" href="styles/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEV NEPONYATEN</title>
+  <link rel="stylesheet" href="styles/styles.css">
+  <style>
+    /* Небольшие косметические вещи, не ломают твой CSS */
+    .hero { position: relative; overflow: hidden; }
+    .hero .particles { position:absolute; inset:0; pointer-events:none; }
+    .fade-in-up { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-in-up.in { opacity: 1; transform: translateY(0); }
+    .pulse-once { animation: pulseOnce 900ms ease-out 1; }
+    @keyframes pulseOnce { from { transform: scale(.98); } 50% { transform: scale(1.02); } to { transform: scale(1); } }
+    .skill-progress { width: 0; transition: width 1.2s ease; }
+    .project-card { transition: transform .3s ease, box-shadow .3s ease; }
+    .project-card:hover { transform: translateY(-6px); box-shadow: 0 10px 30px rgba(0,0,0,.08); }
+  </style>
 </head>
 <body>
-    <!-- Theme Toggle -->
-    <div class="theme-switch">
-        <button class="theme-toggle" id="themeToggle">🌓</button>
+  <!-- Theme Toggle -->
+  <div class="theme-switch">
+    <button class="theme-toggle" id="themeToggle">🌓</button>
+  </div>
+
+  <!-- Visit Counter -->
+  <div class="visit-counter" id="visitCounter">👁 1</div>
+
+  <!-- Navigation -->
+  <header class="header">
+    <div class="container">
+      <div class="nav-container">
+        <div class="logo">
+          <span>{ DevPortfolio }</span>
+        </div>
+        <nav class="nav">
+          <ul class="nav-list" id="navList">
+            <li><a href="index.html" class="nav-link active">Главная</a></li>
+            <li><a href="pages/projects.html" class="nav-link">Проекты</a></li>
+            <li><a href="pages/diary.html" class="nav-link">Дневник</a></li>
+            <li><a href="pages/contacts.html" class="nav-link">Контакты</a></li>
+            <li><a href="pages/music.html" class="nav-link">Не открывай</a></li>
+          </ul>
+        </nav>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
     </div>
+  </header>
 
-    <!-- Visit Counter -->
-    <div class="visit-counter" id="visitCounter">👁 1</div>
-
-    <!-- Navigation -->
-    <header class="header">
-        <div class="container">
-            <div class="nav-container">
-                <div class="logo">
-                    <span>{ DevPortfolio }</span>
-                </div>
-                <nav class="nav">
-                    <ul class="nav-list" id="navList">
-                        <li><a href="index.html" class="nav-link active">Главная</a></li>
-                        <li><a href="pages/projects.html" class="nav-link">Проекты</a></li>
-                        <li><a href="pages/diary.html" class="nav-link">Дневник</a></li>
-                        <li><a href="pages/contacts.html" class="nav-link">Контакты</a></li>
-                    </ul>
-                </nav>
-                <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
-            </div>
+  <main class="main-content">
+    <!-- Hero Section -->
+    <section class="hero">
+      <canvas class="particles" id="heroParticles" aria-hidden="true"></canvas>
+      <div class="container">
+        <h1 class="hero-title fade-in-up" id="heroTitle">Кирилл Чекунов</h1>
+        <p class="hero-subtitle fade-in-up" style="transition-delay:.06s"><span id="typedRole">Student</span></p>
+        <p class="hero-description fade-in-up" style="transition-delay:.12s">
+          Создаю современные сайты с упором на минималистичный дизайн.
+        </p>
+        <div class="hero-buttons fade-in-up" style="transition-delay:.18s">
+          <a href="assets/resume.pdf" download class="btn">📄 Скачать Резюме</a>
+          <a href="pages/projects.html" class="btn btn-outline">🚀 Мои Проекты</a>
         </div>
-    </header>
+      </div>
+    </section>
 
-    <main class="main-content">
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="container">
-                <h1 class="hero-title" id="heroTitle">Кирилл Чекунов</h1>
-                <p class="hero-subtitle">Student</p>
-                <p class="hero-description">
-                    Создаю современные сайты с упором на производительность.
-                </p>
-                <div class="hero-buttons">
-                    <a href="assets/resume.pdf" download class="btn">📄 Скачать Резюме</a>
-                    <a href="pages/projects.html" class="btn btn-outline">🚀 Мои Проекты</a>
-                </div>
+    <!-- Skills Section -->
+    <section class="skills-section">
+      <div class="container">
+        <h2 class="section-title fade-in-up">Мои Навыки</h2>
+        <div class="skills-grid">
+          <div class="skill-category">
+            <h3 class="skill-category-title">Frontend</h3>
+
+            <div class="skill-item">
+              <div class="skill-header"><span>HTML/CSS</span><span>60%</span></div>
+              <div class="skill-bar"><div class="skill-progress" data-level="60"></div></div>
             </div>
-        </section>
 
-        <!-- Skills Section -->
-        <section class="skills-section">
-            <div class="container">
-                <h2 class="section-title">Мои Навыки</h2>
-                <div class="skills-grid">
-                    <div class="skill-category">
-                        <h3 class="skill-category-title">Frontend</h3>
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span>HTML/CSS</span>
-                                <span>95%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 95%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span>JavaScript</span>
-                                <span>90%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 90%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span>React</span>
-                                <span>85%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 85%"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill-category">
-                        <h3 class="skill-category-title">Инструменты</h3>
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span>Git/GitHub</span>
-                                <span>88%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 88%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span>Figma</span>
-                                <span>75%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 75%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span>Webpack</span>
-                                <span>70%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 70%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="skill-item">
+              <div class="skill-header"><span>JavaScript</span><span>40%</span></div>
+              <div class="skill-bar"><div class="skill-progress" data-level="40"></div></div>
             </div>
-        </section>
 
-        <!-- Projects Preview -->
-        <section class="skills-section">
-            <div class="container">
-                <h2 class="section-title">Последние Проекты</h2>
-                <div class="projects-grid">
-                    <div class="project-card">
-                        <h3 class="project-title">Интернет-магазин</h3>
-                        <p class="project-description">Полнофункциональный магазин с корзиной и платежами</p>
-                        <div class="project-technologies">
-                            <span>React</span>
-                            <span>Node.js</span>
-                            <span>MongoDB</span>
-                        </div>
-                    </div>
-                    <div class="project-card">
-                        <h3 class="project-title">Приложение задач</h3>
-                        <p class="project-description">Управление задачами с drag-and-drop</p>
-                        <div class="project-technologies">
-                            <span>React</span>
-                            <span>TypeScript</span>
-                            <span>Redux</span>
-                        </div>
-                    </div>
-                    <div class="project-card">
-                        <h3 class="project-title">Погодное приложение</h3>
-                        <p class="project-description">Дашборд погоды с прогнозами</p>
-                        <div class="project-technologies">
-                            <span>JavaScript</span>
-                            <span>API</span>
-                            <span>Chart.js</span>
-                        </div>
-                    </div>
-                </div>
-                <div style="text-align: center; margin-top: 2rem;">
-                    <a href="pages/projects.html" class="btn">Все проекты →</a>
-                </div>
+            <div class="skill-item">
+              <div class="skill-header"><span>React</span><span>10%</span></div>
+              <div class="skill-bar"><div class="skill-progress" data-level="10"></div></div>
             </div>
-        </section>
-    </main>
+          </div>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 Иван Иванов. Все права защищены.</p>
-            <p>Создано с ❤️ и JavaScript</p>
+          <div class="skill-category">
+            <h3 class="skill-category-title">Инструменты</h3>
+
+            <div class="skill-item">
+              <div class="skill-header"><span>Git/GitHub</span><span>80%</span></div>
+              <div class="skill-bar"><div class="skill-progress" data-level="80"></div></div>
+            </div>
+
+            <div class="skill-item">
+              <div class="skill-header"><span>Figma</span><span>60%</span></div>
+              <div class="skill-bar"><div class="skill-progress" data-level="60"></div></div>
+            </div>
+
+            <div class="skill-item">
+              <div class="skill-header"><span>Webpack</span><span>70%</span></div>
+              <div class="skill-bar"><div class="skill-progress" data-level="70"></div></div>
+            </div>
+          </div>
         </div>
-    </footer>
+      </div>
+    </section>
 
-    <script src="scripts/core.js"></script>
+    <!-- Projects Preview -->
+    <section class="skills-section">
+      <div class="container">
+        <h2 class="section-title fade-in-up">Последние Проекты</h2>
+        <div class="projects-grid">
+          <div class="project-card fade-in-up">
+            <h3 class="project-title">Интернет-магазин</h3>
+            <p class="project-description">Лендинговый магазин "Троечка"</p>
+            <div class="project-technologies"><span>HTML/CSS</span><span>JavaScript</span></div>
+          </div>
+          <div class="project-card fade-in-up" style="transition-delay:.06s">
+            <h3 class="project-title">Фанатский сайт МистерБиста</h3>
+            <p class="project-description">Последние обновления блогера МистерБиста, различные видео и т.д</p>
+            <div class="project-technologies"><span>HTML/CSS</span></div>
+          </div>
+        </div>
+        <div style="text-align:center; margin-top:2rem;">
+          <a href="pages/projects.html" class="btn">Все проекты →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Чекунов Кирилл.</p>
+    </div>
+  </footer>
+
+  <script src="scripts/core.js"></script>
+  <script src="scripts/animations1.js"></script>
+  <script src="scripts/enhancements.js"></script>
+  <script src="scripts/chatbot.js"></script>
 </body>
 </html>

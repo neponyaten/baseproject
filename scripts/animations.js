@@ -1,188 +1,167 @@
-// Animation and interactive effects
-class PortfolioAnimations {
-    constructor() {
-        this.initTypingEffect();
-        this.initScrollAnimations();
-        this.initCounterAnimations();
-        this.initSkillAnimations();
+// scripts/animations.js (Yandex maps version)
+(function () {
+  // ---------- Ripple на всех .btn ----------
+  function attachRipple(root = document) {
+    root.querySelectorAll('.btn').forEach((btn) => {
+      if (btn.dataset.rippleReady) return;
+      btn.dataset.rippleReady = '1';
+
+      const st = getComputedStyle(btn);
+      if (st.position === 'static') btn.style.position = 'relative';
+      btn.style.overflow = 'hidden';
+
+      btn.addEventListener('click', function (e) {
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height) * 1.25;
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+
+        const r = document.createElement('span');
+        r.style.cssText = `
+          position:absolute; left:${x}px; top:${y}px; width:${size}px; height:${size}px;
+          border-radius:50%; background:currentColor; opacity:.16; transform:scale(0);
+          pointer-events:none; transition:transform 420ms ease, opacity 600ms ease; mix-blend-mode:multiply;
+        `;
+        this.appendChild(r);
+        requestAnimationFrame(() => { r.style.transform = 'scale(1.9)'; r.style.opacity = '0'; });
+        setTimeout(() => r.remove(), 650);
+      });
+    });
+  }
+
+  // ---------- Конфетти при первом открытии ----------
+  function launchConfetti(container, duration = 1200, n = 120) {
+    const canvas = document.createElement('canvas');
+    const rect = container.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = Math.min(rect.height || 400, 500);
+    canvas.style.cssText = 'position:absolute; left:0; top:0; pointer-events:none; z-index:3;';
+
+    const parentWasStatic = getComputedStyle(container).position === 'static';
+    if (parentWasStatic) container.style.position = 'relative';
+    container.appendChild(canvas);
+
+    const ctx = canvas.getContext('2d');
+    const pieces = Array.from({ length: n }, () => ({
+      x: Math.random() * canvas.width,
+      y: -20 - Math.random() * 60,
+      s: 2 + Math.random() * 4,
+      vy: 2 + Math.random() * 3,
+      vx: -1 + Math.random() * 2,
+      rot: Math.random() * Math.PI,
+      vr: -0.25 + Math.random() * 0.5,
+    }));
+
+    let start = 0;
+    function tick(ts) {
+      if (!start) start = ts;
+      const t = ts - start;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      pieces.forEach(p => {
+        p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.fillStyle = `hsl(${(p.x / canvas.width) * 360}, 90%, 55%)`;
+        ctx.fillRect(-p.s, -p.s, p.s * 2, p.s * 2);
+        ctx.restore();
+      });
+      if (t < duration) requestAnimationFrame(tick); else canvas.remove();
     }
+    requestAnimationFrame(tick);
+  }
 
-    // Typing effect for hero section
-    initTypingEffect() {
-        const typedElement = document.getElementById('typedTitle');
-        if (!typedElement) return;
+  // ---------- Карта (Яндекс): раскрытие, ленивая загрузка, модалка ----------
+  function initMap() {
+    const toggleBtn = document.getElementById('toggleMapBtn');
+    const copyBtn = document.getElementById('copyCoordsBtn');
+    const openModalBtn = document.getElementById('openMapModalBtn');
 
-        const texts = [
-            "Привет, я Иван Иванов",
-            "Frontend Developer",
-            "React Enthusiast",
-            "Problem Solver"
-        ];
-        
-        let textIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-        let typingSpeed = 100;
+    const panel = document.getElementById('mapPanel');
+    const iframe = document.getElementById('lazyMap');
 
-        function type() {
-            const currentText = texts[textIndex];
-            
-            if (isDeleting) {
-                typedElement.textContent = currentText.substring(0, charIndex - 1);
-                charIndex--;
-                typingSpeed = 50;
-            } else {
-                typedElement.textContent = currentText.substring(0, charIndex + 1);
-                charIndex++;
-                typingSpeed = 100;
-            }
+    const modal = document.getElementById('mapModal');
+    const modalFrame = document.getElementById('modalMapFrame');
+    const closeModalBtn = document.getElementById('closeMapModalBtn');
 
-            if (!isDeleting && charIndex === currentText.length) {
-                typingSpeed = 2000; // Pause at end
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                textIndex = (textIndex + 1) % texts.length;
-                typingSpeed = 500; // Pause before next text
-            }
+    if (!toggleBtn || !panel || !iframe) return;
 
-            setTimeout(type, typingSpeed);
+    let hasLoaded = false;
+    let confettiShown = false;
+
+    // Координаты (Москва, Красная площадь по умолчанию)
+    const coords = { lat: 55.755800, lng: 37.617300 };
+
+    // Раскрытие + ленивая загрузка карты (Яндекс-виджет)
+    toggleBtn.addEventListener('click', () => {
+      const opening = !panel.classList.contains('open');
+      if (opening) {
+        panel.classList.add('open');
+        panel.style.maxHeight = '700px';
+        panel.setAttribute('aria-hidden', 'false');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+        toggleBtn.textContent = 'Скрыть карту';
+
+        if (!hasLoaded) {
+          const src = iframe.getAttribute('data-src');
+          if (src) iframe.setAttribute('src', src);
+          hasLoaded = true;
         }
+        if (!confettiShown) {
+          confettiShown = true;
+          launchConfetti(panel);
+        }
+      } else {
+        panel.classList.remove('open');
+        panel.style.maxHeight = '0';
+        panel.setAttribute('aria-hidden', 'true');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        toggleBtn.textContent = 'Показать карту';
+      }
+    });
 
-        // Start typing effect
-        setTimeout(type, 1000);
+    // Копирование координат
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        const text = `${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)}`;
+        try {
+          await navigator.clipboard.writeText(text);
+          if (window.portfolio?.showMessage) {
+            portfolio.showMessage('success', `Координаты скопированы: ${text}`);
+          } else {
+            alert(`Координаты скопированы: ${text}`);
+          }
+        } catch (e) {
+          if (window.portfolio?.showMessage) {
+            portfolio.showMessage('error', 'Не удалось скопировать координаты');
+          } else {
+            alert('Не удалось скопировать координаты');
+          }
+        }
+      });
     }
 
-    // Scroll animations
-    initScrollAnimations() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-in');
-                    
-                    // Animate counters if element has data-target
-                    const counters = entry.target.querySelectorAll('[data-target]');
-                    counters.forEach(counter => {
-                        const target = parseInt(counter.getAttribute('data-target'));
-                        this.animateCounter(counter, 0, target, 2000);
-                    });
-                    
-                    // Animate skills
-                    const skills = entry.target.querySelectorAll('[data-level]');
-                    skills.forEach(skill => {
-                        const level = parseInt(skill.getAttribute('data-level'));
-                        this.animateSkill(skill, level);
-                    });
-                }
-            });
-        }, { 
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        });
-
-        // Observe all animate-able elements
-        document.querySelectorAll('.skill-item, .project-card, .stat-card, .section-title').forEach(el => {
-            observer.observe(el);
-        });
+    // Модальное окно на весь экран (тот же src Яндекс-виджета)
+    if (openModalBtn && modal && modalFrame && closeModalBtn) {
+      const mapSrc = iframe.getAttribute('data-src');
+      openModalBtn.addEventListener('click', () => {
+        if (modal.style.display !== 'flex') {
+          modal.style.display = 'flex';
+          modal.setAttribute('aria-hidden', 'false');
+          if (!modalFrame.getAttribute('src')) modalFrame.setAttribute('src', mapSrc);
+        }
+      });
+      const closeModal = () => {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+      };
+      closeModalBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
     }
+  }
 
-    // Counter animations
-    initCounterAnimations() {
-        const counters = document.querySelectorAll('[data-target]');
-        counters.forEach(counter => {
-            const target = parseInt(counter.getAttribute('data-target'));
-            this.animateCounter(counter, 0, target, 2000);
-        });
-    }
-
-    animateCounter(element, start, end, duration) {
-        let startTimestamp = null;
-        const step = (timestamp) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            const value = Math.floor(progress * (end - start) + start);
-            element.textContent = value.toLocaleString();
-            
-            if (progress < 1) {
-                window.requestAnimationFrame(step);
-            }
-        };
-        window.requestAnimationFrame(step);
-    }
-
-    // Skill bar animations
-    initSkillAnimations() {
-        const skills = document.querySelectorAll('[data-level]');
-        skills.forEach(skill => {
-            const level = parseInt(skill.getAttribute('data-level'));
-            this.animateSkill(skill, level);
-        });
-    }
-
-    animateSkill(skillElement, targetLevel) {
-        let currentLevel = 0;
-        const duration = 1500;
-        const increment = targetLevel / (duration / 16); // 60fps
-        
-        const animate = () => {
-            currentLevel += increment;
-            if (currentLevel >= targetLevel) {
-                currentLevel = targetLevel;
-            }
-            
-            skillElement.style.width = currentLevel + '%';
-            
-            if (currentLevel < targetLevel) {
-                requestAnimationFrame(animate);
-            }
-        };
-        
-        animate();
-    }
-
-    // Parallax effect for hero section
-    initParallax() {
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallaxElements = document.querySelectorAll('.parallax');
-            
-            parallaxElements.forEach(element => {
-                const speed = element.dataset.speed || 0.5;
-                const yPos = -(scrolled * speed);
-                element.style.transform = `translateY(${yPos}px)`;
-            });
-        });
-    }
-
-    // Hover effects for interactive elements
-    initHoverEffects() {
-        // Project cards hover effect
-        const projectCards = document.querySelectorAll('.project-card');
-        projectCards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-10px) scale(1.02)';
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0) scale(1)';
-            });
-        });
-
-        // Button hover effects
-        const buttons = document.querySelectorAll('.btn');
-        buttons.forEach(btn => {
-            btn.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-2px)';
-            });
-            
-            btn.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-    }
-}
-
-// Initialize animations when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    new PortfolioAnimations();
-});
+  // ---------- Init ----------
+  document.addEventListener('DOMContentLoaded', () => {
+    attachRipple();
+    initMap();
+  });
+})();
